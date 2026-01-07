@@ -10,7 +10,8 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 VECTOR_STORE_NAME = "optibot-knowledge"
 ARTICLES_DIR = "articles"
-HASH_FILE = "/data/file_hashes.json"
+HASH_FILE = "data/file_hashes.json"
+HASH_DIR = os.path.dirname(HASH_FILE)  # /data
 
 def load_old_hashes():
     if not os.path.exists(HASH_FILE):
@@ -27,6 +28,8 @@ def load_old_hashes():
         return {}
 
 def save_hashes(hashes):
+    if not os.path.exists(HASH_DIR):
+        os.makedirs(HASH_DIR)  # tạo folder nếu chưa có
     with open(HASH_FILE, "w") as f:
         json.dump(hashes, f, indent=2)
 
